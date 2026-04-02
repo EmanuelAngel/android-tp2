@@ -1,5 +1,7 @@
 package com.example.tp2;
 
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 
 import androidx.activity.EdgeToEdge;
@@ -9,6 +11,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 public class MainActivity extends AppCompatActivity {
+    private UnlockScreenReceiver unlockScreenReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,5 +23,16 @@ public class MainActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        unlockScreenReceiver = new UnlockScreenReceiver();
+
+        registerReceiver(unlockScreenReceiver, new IntentFilter(Intent.ACTION_USER_PRESENT));
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        unregisterReceiver(unlockScreenReceiver);
     }
 }
